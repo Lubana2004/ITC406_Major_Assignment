@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ITC406_Major_Assignment</string>
+    <string name="app_logo">App Logo</string>
+    <string-array name="gender_options">
+        <item>Female</item>
+        <item>Male</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="role_options">
+        <item>Staff</item>
+        <item>Patient</item>
+    </string-array>
+</resources>
