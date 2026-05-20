@@ -32,28 +32,15 @@
         app:layout_constraintVertical_bias="0.628" />
 
     <Button
-        android:id="@+id/btnAdmin3"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="RESET PASSWORD"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.74" />
-
-    <Button
         android:id="@+id/btnAdmin4"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:text="LOGOUT"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.857" />
+        app:layout_constraintVertical_bias="0.744" />
 
     <TextView
         android:id="@+id/txtLogin2"
@@ -86,7 +73,7 @@
         />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/txtPatientCount"
         android:layout_width="116dp"
         android:layout_height="90dp"
         android:background="#0D0909"
@@ -99,7 +86,7 @@
         app:layout_constraintVertical_bias="0.33" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/txtStaffCount"
         android:layout_width="116dp"
         android:layout_height="90dp"
         android:background="#0D0909"

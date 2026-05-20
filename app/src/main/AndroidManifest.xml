@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ITC406_Major_Assignment">
         <activity
+            android:name=".Reset_Password_Admin"
+            android:exported="false" />
+        <activity
+            android:name=".Edit_User_Admin"
+            android:exported="false" />
+        <activity
             android:name=".Manage_User_Admin"
             android:exported="false" />
         <activity
