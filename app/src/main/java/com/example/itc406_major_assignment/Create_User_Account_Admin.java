@@ -1,10 +1,12 @@
 package com.example.itc406_major_assignment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -177,8 +179,11 @@ public class Create_User_Account_Admin extends AppCompatActivity {
 
         // BACK BUTTON
         backBtn.setOnClickListener(v -> {
-
+            Intent intent = new Intent(Create_User_Account_Admin.this, Admin_Dashboard.class);
+            startActivity(intent);
             finish();
+
+
 
         });
     }

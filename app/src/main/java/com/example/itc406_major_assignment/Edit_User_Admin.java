@@ -125,9 +125,7 @@ public class Edit_User_Admin extends AppCompatActivity {
         // BACK BUTTON
         backBtn.setOnClickListener(v -> {
 
-            Intent intent = new Intent(
-                    Edit_User_Admin.this,
-                    Manage_User_Admin.class);
+            Intent intent = new Intent(Edit_User_Admin.this, Manage_User_Admin.class);
 
             startActivity(intent);
 

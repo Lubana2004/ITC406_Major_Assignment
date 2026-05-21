@@ -55,8 +55,7 @@ public class Manage_User_Admin extends AppCompatActivity {
         backBtn.setOnClickListener(v -> {
 
             Intent intent = new Intent(
-                    Manage_User_Admin.this,
-                    Admin_Dashboard.class);
+                    Manage_User_Admin.this, Admin_Dashboard.class);
 
             startActivity(intent);
 
