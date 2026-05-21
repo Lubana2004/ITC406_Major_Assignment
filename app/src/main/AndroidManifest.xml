@@ -12,6 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ITC406_Major_Assignment">
         <activity
+            android:name=".Staff_My_Profile"
+            android:exported="false" />
+        <activity
+            android:name=".Staff_Upload_Medical_Report"
+            android:exported="false" />
+        <activity
+            android:name=".Staff_Appointments"
+            android:exported="false" />
+        <activity
+            android:name=".Staff_Patient_Detail"
+            android:exported="false" />
+        <activity
+            android:name=".Staff_Patient_Reports"
+            android:exported="false" />
+        <activity
             android:name=".RegisterPatient"
             android:exported="false" />
         <activity

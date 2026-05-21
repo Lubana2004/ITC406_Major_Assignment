@@ -8,18 +8,6 @@
     tools:context=".Staff_Dashboard">
 
     <Button
-        android:id="@+id/btnRegisterPatient"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="REGISTER PATIENT"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.292" />
-
-    <Button
         android:id="@+id/btnPatientRecords"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -86,14 +74,14 @@
         android:letterSpacing="0.08"
         android:text="WELCOME"
         android:textColor="#1536E6"
-        android:textSize="20sp"
+        android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.546"
+        app:layout_constraintHorizontal_bias="0.659"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.185" />
+        app:layout_constraintVertical_bias="0.187" />
 
     <ImageView
         android:id="@+id/imageView16"
