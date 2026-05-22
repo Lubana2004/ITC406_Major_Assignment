@@ -1,84 +1,90 @@
 package com.example.itc406_major_assignment;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 
 public class Manage_User_Admin extends AppCompatActivity {
 
     RecyclerView recyclerView;
-
     ArrayList<UserModel> userList;
-
     UserAdapter adapter;
 
-    DatabaseHelper db;
+    FirebaseFirestore firestore;
 
     ImageButton backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_manage_user_admin);
 
-        // RECYCLERVIEW
-        recyclerView =
-                findViewById(R.id.recyclerViewUsers);
+        // FIREBASE
+        firestore = FirebaseFirestore.getInstance();
 
-        // BACK BUTTON
-        backBtn =
-                findViewById(R.id.imageButton3);
-
-        db = new DatabaseHelper(this);
+        // RECYCLER
+        recyclerView = findViewById(R.id.recyclerViewUsers);
+        backBtn = findViewById(R.id.imageButton5);
 
         userList = new ArrayList<>();
 
-        loadUsers();
+        recyclerView.setLayoutManager(
+                new LinearLayoutManager(this)
+        );
 
         adapter = new UserAdapter(this, userList);
-
-        recyclerView.setLayoutManager(
-                new LinearLayoutManager(this));
-
         recyclerView.setAdapter(adapter);
 
-        // BACK BUTTON CLICK
+        loadUsers();
+
+        // BACK BUTTON
         backBtn.setOnClickListener(v -> {
-
-            Intent intent = new Intent(
-                    Manage_User_Admin.this, Admin_Dashboard.class);
-
-            startActivity(intent);
-
+            startActivity(new Intent(this, Admin_Dashboard.class));
             finish();
         });
     }
 
     private void loadUsers() {
 
-        Cursor cursor = db.getAllUsers();
+        firestore.collection("Users")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
 
-        while(cursor.moveToNext()) {
+                    userList.clear();
 
-            userList.add(
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
 
-                    new UserModel(
+                        userList.add(new UserModel(
+                                doc.getId(),
+                                doc.getString("firstName"),
+                                doc.getString("lastName"),
+                                doc.getString("role")
+                        ));
+                    }
 
-                            cursor.getInt(0),
-                            cursor.getString(1),
-                            cursor.getString(2),
-                            cursor.getString(6)
-                    )
-            );
-        }
+                    adapter.notifyDataSetChanged();
+
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this,
+                                "Failed: " + e.getMessage(),
+                                Toast.LENGTH_LONG).show()
+                );
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadUsers();
     }
 }

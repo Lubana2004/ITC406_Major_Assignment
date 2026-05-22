@@ -5,8 +5,9 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Admin_Dashboard extends AppCompatActivity {
 
@@ -14,16 +15,15 @@ public class Admin_Dashboard extends AppCompatActivity {
 
     TextView txtPatientCount, txtStaffCount;
 
-    DatabaseHelper db;
+    FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_admin_dashboard);
 
-        // DATABASE
-        db = new DatabaseHelper(this);
+        // FIREBASE
+        firestore = FirebaseFirestore.getInstance();
 
         // BUTTONS
         btnCreateUser = findViewById(R.id.btnAdmin2);
@@ -34,55 +34,54 @@ public class Admin_Dashboard extends AppCompatActivity {
         txtPatientCount = findViewById(R.id.txtPatientCount);
         txtStaffCount = findViewById(R.id.txtStaffCount);
 
-        // SHOW COUNTS
-        txtPatientCount.setText(
-                String.valueOf(db.getPatientCount()));
+        // LOAD COUNTS
+        loadCounts();
 
-        txtStaffCount.setText(
-                String.valueOf(db.getStaffCount()));
-
-        // CREATE USER BUTTON
+        // CREATE USER
         btnCreateUser.setOnClickListener(v -> {
-
-            Intent intent = new Intent(
-                    Admin_Dashboard.this,
-                    Create_User_Account_Admin.class);
-
-            startActivity(intent);
+            startActivity(new Intent(this, Create_User_Account_Admin.class));
         });
 
-        // MANAGE USER BUTTON
+        // MANAGE USER
         btnManageUser.setOnClickListener(v -> {
-
-            Intent intent = new Intent(
-                    Admin_Dashboard.this,
-                    Manage_User_Admin.class);
-
-            startActivity(intent);
+            startActivity(new Intent(this, Manage_User_Admin.class));
         });
 
-        // LOGOUT BUTTON
+        // LOGOUT
         btnLogout.setOnClickListener(v -> {
-
-            Intent intent = new Intent(
-                    Admin_Dashboard.this,
-                    Login_Admin.class);
-
-            startActivity(intent);
-
+            startActivity(new Intent(this, Login_Admin.class));
             finish();
         });
+    }
+
+    private void loadCounts() {
+
+        // PATIENT COUNT
+        firestore.collection("Users")
+                .whereEqualTo("role", "Patient")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+
+                    int count = queryDocumentSnapshots.size();
+                    txtPatientCount.setText("Patient\n"+String.valueOf(count));
+
+                });
+
+        // STAFF COUNT
+        firestore.collection("Users")
+                .whereEqualTo("role", "Staff")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+
+                    int count = queryDocumentSnapshots.size();
+                    txtStaffCount.setText("Staff\n" +String.valueOf(count));
+
+                });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        // REFRESH COUNTS WHEN RETURNING
-        txtPatientCount.setText(
-                String.valueOf(db.getPatientCount()));
-
-        txtStaffCount.setText(
-                String.valueOf(db.getStaffCount()));
+        loadCounts();
     }
 }

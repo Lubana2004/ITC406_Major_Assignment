@@ -6,11 +6,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Create_User_Account_Admin extends AppCompatActivity {
 
@@ -27,17 +31,15 @@ public class Create_User_Account_Admin extends AppCompatActivity {
 
     ImageButton backBtn;
 
-    DatabaseHelper db;
+    FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // REMOVE EdgeToEdge
         setContentView(R.layout.activity_create_user_account_admin);
 
-        // DATABASE
-        db = new DatabaseHelper(this);
+        // FIREBASE FIRESTORE INIT
+        firestore = FirebaseFirestore.getInstance();
 
         // SPINNERS
         spinnerGender = findViewById(R.id.spinnerGender);
@@ -62,11 +64,9 @@ public class Create_User_Account_Admin extends AppCompatActivity {
         String[] gender = {"Female", "Male", "Other"};
 
         ArrayAdapter<String> genderAdapter =
-                new ArrayAdapter<>(
-                        this,
+                new ArrayAdapter<>(this,
                         android.R.layout.simple_spinner_item,
-                        gender
-                );
+                        gender);
 
         genderAdapter.setDropDownViewResource(
                 android.R.layout.simple_spinner_dropdown_item
@@ -78,11 +78,9 @@ public class Create_User_Account_Admin extends AppCompatActivity {
         String[] role = {"Staff", "Patient"};
 
         ArrayAdapter<String> roleAdapter =
-                new ArrayAdapter<>(
-                        this,
+                new ArrayAdapter<>(this,
                         android.R.layout.simple_spinner_item,
-                        role
-                );
+                        role);
 
         roleAdapter.setDropDownViewResource(
                 android.R.layout.simple_spinner_dropdown_item
@@ -93,74 +91,69 @@ public class Create_User_Account_Admin extends AppCompatActivity {
         // CREATE ACCOUNT BUTTON
         btnCreateAccount.setOnClickListener(v -> {
 
-            String firstName =
-                    edtFirstName.getText().toString().trim();
+            String firstName = edtFirstName.getText().toString().trim();
+            String lastName = edtLastName.getText().toString().trim();
+            String address = edtAddress.getText().toString().trim();
+            String number = edtNumber.getText().toString().trim();
+            String username = edtUsername.getText().toString().trim();
+            String password = edtPassword.getText().toString().trim();
 
-            String lastName =
-                    edtLastName.getText().toString().trim();
-
-            String address =
-                    edtAddress.getText().toString().trim();
-
-            String number =
-                    edtNumber.getText().toString().trim();
-
-            String username =
-                    edtUsername.getText().toString().trim();
-
-            String password =
-                    edtPassword.getText().toString().trim();
-
-            String genderValue =
-                    spinnerGender.getSelectedItem().toString();
-
-            String roleValue =
-                    spinnerRole.getSelectedItem().toString();
+            String genderValue = spinnerGender.getSelectedItem().toString();
+            String roleValue = spinnerRole.getSelectedItem().toString();
 
             // VALIDATION
-            if(firstName.isEmpty() ||
-                    lastName.isEmpty() ||
-                    address.isEmpty() ||
-                    number.isEmpty() ||
-                    username.isEmpty() ||
-                    password.isEmpty()) {
+            if (firstName.isEmpty() || lastName.isEmpty() ||
+                    address.isEmpty() || number.isEmpty() ||
+                    username.isEmpty() || password.isEmpty()) {
 
-                Toast.makeText(
-                        this,
+                Toast.makeText(this,
                         "Please fill all fields",
-                        Toast.LENGTH_SHORT
-                ).show();
-
+                        Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            boolean inserted = db.insertUser(
-                    firstName,
-                    lastName,
-                    genderValue,
-                    address,
-                    number,
-                    roleValue,
-                    username,
-                    password
-            );
+            // CREATE DATA MAP
+            Map<String, Object> user = new HashMap<>();
+            user.put("firstName", firstName);
+            user.put("lastName", lastName);
+            user.put("gender", genderValue);
+            user.put("address", address);
+            user.put("phoneNumber", number);
+            user.put("role", roleValue);
+            user.put("username", username);
+            user.put("password", password);
 
-            if(inserted) {
+            // SAVE TO FIRESTORE
+            firestore.collection("Users")
+                    .add(user)
+                    .addOnSuccessListener(documentReference -> {
 
-                Toast.makeText(
-                        this,
-                        "Account Created Successfully",
-                        Toast.LENGTH_SHORT
-                ).show();
+                        Toast.makeText(
+                                Create_User_Account_Admin.this,
+                                "Account Created Successfully",
+                                Toast.LENGTH_SHORT
+                        ).show();
 
-            } else {
+                        // CLEAR FORM
+                        edtFirstName.setText("");
+                        edtLastName.setText("");
+                        edtAddress.setText("");
+                        edtNumber.setText("");
+                        edtUsername.setText("");
+                        edtPassword.setText("");
 
-                Toast.makeText(
-                        this,
-                        "Error Creating Account",
-                        Toast.LENGTH_SHORT
-                ).show();
-            }
+                        spinnerGender.setSelection(0);
+                        spinnerRole.setSelection(0);
+
+                    })
+                    .addOnFailureListener(e -> {
+
+                        Toast.makeText(
+                                Create_User_Account_Admin.this,
+                                "Error: " + e.getMessage(),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    });
         });
 
         // CLEAR BUTTON
@@ -179,12 +172,12 @@ public class Create_User_Account_Admin extends AppCompatActivity {
 
         // BACK BUTTON
         backBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(Create_User_Account_Admin.this, Admin_Dashboard.class);
+            Intent intent = new Intent(
+                    Create_User_Account_Admin.this,
+                    Admin_Dashboard.class
+            );
             startActivity(intent);
             finish();
-
-
-
         });
     }
 }

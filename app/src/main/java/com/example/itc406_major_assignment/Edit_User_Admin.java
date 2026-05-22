@@ -1,7 +1,6 @@
 package com.example.itc406_major_assignment;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -10,8 +9,9 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Edit_User_Admin extends AppCompatActivity {
 
@@ -25,20 +25,19 @@ public class Edit_User_Admin extends AppCompatActivity {
     Spinner spinnerGender, spinnerRole;
 
     Button btnSave;
-
     ImageButton backBtn;
 
-    DatabaseHelper db;
+    FirebaseFirestore firestore;
 
-    int userId;
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_edit_user_admin);
 
-        db = new DatabaseHelper(this);
+        // FIREBASE INIT
+        firestore = FirebaseFirestore.getInstance();
 
         // EDITTEXTS
         edtFirstName = findViewById(R.id.edtFirstName3);
@@ -52,112 +51,114 @@ public class Edit_User_Admin extends AppCompatActivity {
         spinnerGender = findViewById(R.id.spinnerGender2);
         spinnerRole = findViewById(R.id.spinnerRole2);
 
-        // BUTTON
+        // BUTTONS
         btnSave = findViewById(R.id.btnSave);
-
-        // BACK BUTTON
         backBtn = findViewById(R.id.imageButton4);
 
-        // GENDER SPINNER
+        // SPINNER DATA
         String[] gender = {"Female", "Male", "Other"};
+        String[] role = {"Staff", "Patient"};
 
         ArrayAdapter<String> genderAdapter =
-                new ArrayAdapter<>(
-                        this,
+                new ArrayAdapter<>(this,
                         android.R.layout.simple_spinner_dropdown_item,
                         gender);
 
-        spinnerGender.setAdapter(genderAdapter);
-
-        // ROLE SPINNER
-        String[] role = {"Staff", "Patient"};
-
         ArrayAdapter<String> roleAdapter =
-                new ArrayAdapter<>(
-                        this,
+                new ArrayAdapter<>(this,
                         android.R.layout.simple_spinner_dropdown_item,
                         role);
 
+        spinnerGender.setAdapter(genderAdapter);
         spinnerRole.setAdapter(roleAdapter);
 
-        // GET USER ID
-        userId = getIntent().getIntExtra("id", -1);
+        // GET USER ID FROM INTENT
+        userId = getIntent().getStringExtra("id");
 
+        // LOAD USER DATA
         loadUserData();
 
-        // SAVE BUTTON
+        // SAVE / UPDATE USER
         btnSave.setOnClickListener(v -> {
 
-            boolean updated = db.updateUser(
+            firestore.collection("Users")
+                    .document(userId)
+                    .update(
+                            "firstName", edtFirstName.getText().toString(),
+                            "lastName", edtLastName.getText().toString(),
+                            "gender", spinnerGender.getSelectedItem().toString(),
+                            "address", edtAddress.getText().toString(),
+                            "phoneNumber", edtNumber.getText().toString(),
+                            "role", spinnerRole.getSelectedItem().toString(),
+                            "username", edtUsername.getText().toString(),
+                            "password", edtPassword.getText().toString()
+                    )
+                    .addOnSuccessListener(aVoid -> {
 
-                    userId,
+                        Toast.makeText(
+                                Edit_User_Admin.this,
+                                "User Updated Successfully",
+                                Toast.LENGTH_SHORT
+                        ).show();
 
-                    edtFirstName.getText().toString(),
-                    edtLastName.getText().toString(),
-                    spinnerGender.getSelectedItem().toString(),
-                    edtAddress.getText().toString(),
-                    edtNumber.getText().toString(),
-                    spinnerRole.getSelectedItem().toString(),
-                    edtUsername.getText().toString(),
-                    edtPassword.getText().toString()
-            );
+                        finish();
 
-            if(updated) {
+                    })
+                    .addOnFailureListener(e -> {
 
-                Toast.makeText(
-                        this,
-                        "User Updated Successfully",
-                        Toast.LENGTH_SHORT
-                ).show();
-
-                finish();
-
-            } else {
-
-                Toast.makeText(
-                        this,
-                        "Update Failed",
-                        Toast.LENGTH_SHORT
-                ).show();
-            }
+                        Toast.makeText(
+                                Edit_User_Admin.this,
+                                "Update Failed: " + e.getMessage(),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    });
         });
 
         // BACK BUTTON
-        backBtn.setOnClickListener(v -> {
-
-            Intent intent = new Intent(Edit_User_Admin.this, Manage_User_Admin.class);
-
-            startActivity(intent);
-
-            finish();
-        });
+        backBtn.setOnClickListener(v -> finish());
     }
 
     private void loadUserData() {
 
-        Cursor cursor = db.getUserById(userId);
+        firestore.collection("Users")
+                .document(userId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
 
-        if(cursor.moveToFirst()) {
+                    if (documentSnapshot.exists()) {
 
-            edtFirstName.setText(cursor.getString(1));
-            edtLastName.setText(cursor.getString(2));
+                        edtFirstName.setText(documentSnapshot.getString("firstName"));
+                        edtLastName.setText(documentSnapshot.getString("lastName"));
+                        edtAddress.setText(documentSnapshot.getString("address"));
+                        edtNumber.setText(documentSnapshot.getString("phoneNumber"));
+                        edtUsername.setText(documentSnapshot.getString("username"));
+                        edtPassword.setText(documentSnapshot.getString("password"));
 
-            edtAddress.setText(cursor.getString(4));
-            edtNumber.setText(cursor.getString(5));
+                        String gender = documentSnapshot.getString("gender");
+                        String role = documentSnapshot.getString("role");
 
-            edtUsername.setText(cursor.getString(7));
-            edtPassword.setText(cursor.getString(8));
+                        if (gender != null) {
+                            spinnerGender.setSelection(
+                                    ((ArrayAdapter) spinnerGender.getAdapter())
+                                            .getPosition(gender)
+                            );
+                        }
 
-            String gender = cursor.getString(3);
-            String role = cursor.getString(6);
+                        if (role != null) {
+                            spinnerRole.setSelection(
+                                    ((ArrayAdapter) spinnerRole.getAdapter())
+                                            .getPosition(role)
+                            );
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
 
-            spinnerGender.setSelection(
-                    ((ArrayAdapter) spinnerGender.getAdapter())
-                            .getPosition(gender));
-
-            spinnerRole.setSelection(
-                    ((ArrayAdapter) spinnerRole.getAdapter())
-                            .getPosition(role));
-        }
+                    Toast.makeText(
+                            this,
+                            "Failed to load user: " + e.getMessage(),
+                            Toast.LENGTH_LONG
+                    ).show();
+                });
     }
 }

@@ -12,17 +12,17 @@
         android:id="@+id/imageView2"
         android:layout_width="410dp"
         android:layout_height="113dp"
+        android:background="@color/white"
         android:contentDescription="@string/app_logo"
-        android:src="@drawable/logo"
         android:scaleType="centerCrop"
+        android:src="@drawable/logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.003"
 
-         />
+        app:layout_constraintVertical_bias="0.048" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -34,20 +34,8 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.267"
+        app:layout_constraintVertical_bias="0.361"
         app:srcCompat="@drawable/heart" />
-
-    <Button
-        android:id="@+id/btnAdmin"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="LOGIN AS ADMIN"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.465" />
 
     <Button
         android:id="@+id/btnStaff"
@@ -56,10 +44,22 @@
         android:text="LOGIN AS STAFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.585"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.575" />
+        app:layout_constraintVertical_bias="0.759" />
+
+    <Button
+        android:id="@+id/btnAdmin"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="LOGIN AS ADMIN"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.585"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.65" />
 
     <Button
         android:id="@+id/btnPatient"
@@ -68,12 +68,10 @@
         android:text="LOGIN AS PATIENT"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.585"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.689" />
-
-
+        app:layout_constraintVertical_bias="0.874" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
