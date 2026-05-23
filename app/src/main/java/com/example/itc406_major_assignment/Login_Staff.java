@@ -41,6 +41,8 @@ public class Login_Staff extends AppCompatActivity {
             finish();
         });
 
+
+
         // LOGIN BUTTON
         btnLogin.setOnClickListener(v -> {
 
@@ -63,7 +65,12 @@ public class Login_Staff extends AppCompatActivity {
 
                             Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
 
-                            Intent intent = new Intent(Login_Staff.this, Staff_Dashboard.class);
+                            Intent intent =
+                                    new Intent(Login_Staff.this,
+                                            Staff_Dashboard.class);
+
+                            intent.putExtra("username", username);
+
                             startActivity(intent);
                             finish();
 

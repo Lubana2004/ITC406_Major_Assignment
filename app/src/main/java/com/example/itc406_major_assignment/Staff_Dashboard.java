@@ -2,6 +2,7 @@ package com.example.itc406_major_assignment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -23,6 +24,9 @@ public class Staff_Dashboard extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        String username =
+                getIntent().getStringExtra("username");
 
         btnPatientRecords = findViewById(R.id.btnPatientRecords);
         btnAppointment = findViewById(R.id.btnAppointment);
@@ -53,11 +57,20 @@ public class Staff_Dashboard extends AppCompatActivity {
 
         // MY PROFILE BUTTON
         btnMyProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(Staff_Dashboard.this,
-                    Staff_My_Profile.class);
+            Intent intent =
+                    new Intent(Staff_Dashboard.this,
+                            Staff_My_Profile.class);
+
+            intent.putExtra("username", username);
+
             startActivity(intent);
         });
 
+
+        btnLogout.setOnClickListener(v -> {
+            startActivity(new Intent(this, Login_Staff.class));
+            finish();
+        });
 
     }
 }

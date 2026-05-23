@@ -52,17 +52,6 @@
         app:layout_constraintVertical_bias="0.176" />
 
     <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="327dp"
-        android:layout_height="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.69"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
-
-    <Spinner
         android:id="@+id/spinner2"
         android:layout_width="327dp"
         android:layout_height="48dp"
@@ -219,4 +208,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.974" />
+
+    <TextView
+        android:id="@+id/patientName"
+        android:layout_width="204dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="212dp"
+        android:text="TextView"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.285"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
