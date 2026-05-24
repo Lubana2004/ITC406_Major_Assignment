@@ -1,25 +1,74 @@
 package com.example.itc406_major_assignment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
 
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class Patient_Dashboard extends AppCompatActivity {
+
+    TextView txtWelcome, txtPatientId;
+    Button btnReports, btnMyProfile, btnLogout;
+
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_patient_dashboard);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        // GET DATA FROM LOGIN
+        username = getIntent().getStringExtra("username");
+
+        // INIT VIEWS
+        txtWelcome = findViewById(R.id.txtWelcome);
+        txtPatientId = findViewById(R.id.txtWelcome2);
+
+        btnReports = findViewById(R.id.btnReports);
+        btnMyProfile = findViewById(R.id.btnMyPofile);
+        btnLogout = findViewById(R.id.btnLogout);
+
+        // SHOW USERNAME
+        txtPatientId.setText("Patient Name: " + username);
+
+        // REPORTS BUTTON
+        btnReports.setOnClickListener(v -> {
+
+            Intent intent = new Intent(
+                    Patient_Dashboard.this,
+                    Patient_My_Reports.class
+            );
+
+            intent.putExtra("username", username);
+            startActivity(intent);
+        });
+
+        // PROFILE BUTTON
+        btnMyProfile.setOnClickListener(v -> {
+
+            Intent intent = new Intent(
+                    Patient_Dashboard.this,
+                    Patient_My_Profile.class
+            );
+
+            intent.putExtra("username", username);
+            startActivity(intent);
+        });
+
+        // LOGOUT BUTTON
+        btnLogout.setOnClickListener(v -> {
+
+            Intent intent = new Intent(
+                    Patient_Dashboard.this,
+                    Login_Patient.class
+            );
+
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                    Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+            startActivity(intent);
         });
     }
 }

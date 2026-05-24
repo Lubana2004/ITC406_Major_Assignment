@@ -1,125 +1,215 @@
 package com.example.itc406_major_assignment;
 
 import android.os.Bundle;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Staff_Upload_Medical_Report extends AppCompatActivity {
 
-    Spinner spinnerPatient, spinnerReportType, spinnerDoctor;
+    Spinner spinner2, spinner3;
+
+    EditText editTextDate, patientName;
+
     TextView txtFileName;
-    Button btnSave, btnCancel;
-    ImageButton backBtn;
+
+    Button btnUpload, btnSave, btnCancel;
+
+    ImageButton imageButton15;
 
     FirebaseFirestore firestore;
 
-    ArrayList<String> patientList = new ArrayList<>();
-    ArrayList<String> patientIds = new ArrayList<>();
+    String selectedFileName = "No file selected";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staff_upload_medical_report);
 
+        // FIRESTORE
         firestore = FirebaseFirestore.getInstance();
 
-        spinnerReportType = findViewById(R.id.spinner2);
-        spinnerDoctor = findViewById(R.id.spinner3);
+        // SPINNERS
+        spinner2 = findViewById(R.id.spinner2);
+        spinner3 = findViewById(R.id.spinner3);
 
+        // EDITTEXTS
+        editTextDate = findViewById(R.id.editTextDate);
+        patientName = findViewById(R.id.patientName);
+
+        // TEXTVIEW
         txtFileName = findViewById(R.id.txtFileName);
+
+        // BUTTONS
+        btnUpload = findViewById(R.id.btnUpload);
         btnSave = findViewById(R.id.btnSave);
         btnCancel = findViewById(R.id.btnCancel);
-        backBtn = findViewById(R.id.imageButton15);
 
-        // SIMPLE DATA
-        String[] reportTypes = {"Blood Test", "X-Ray", "MRI", "Prescription"};
-        String[] doctors = {"Dr Smith", "Dr John", "Dr Patel"};
+        // BACK BUTTON
+        imageButton15 = findViewById(R.id.imageButton15);
 
-        spinnerReportType.setAdapter(new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item,
-                reportTypes));
+        // -----------------------------
+        // REPORT TYPES
+        // -----------------------------
+        String[] reportTypes = {
+                "Blood Test",
+                "X-Ray",
+                "MRI",
+                "Prescription",
+                "ECG"
+        };
 
-        spinnerDoctor.setAdapter(new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item,
-                doctors));
+        ArrayAdapter<String> reportAdapter =
+                new ArrayAdapter<>(
+                        this,
+                        android.R.layout.simple_spinner_dropdown_item,
+                        reportTypes
+                );
 
-        loadPatients();
+        spinner2.setAdapter(reportAdapter);
 
-        btnSave.setOnClickListener(v -> saveReport());
+        // -----------------------------
+        // DOCTOR NAMES
+        // -----------------------------
+        String[] doctors = {
+                "Dr Smith",
+                "Dr Kumar",
+                "Dr Ali"
+        };
 
+        ArrayAdapter<String> doctorAdapter =
+                new ArrayAdapter<>(
+                        this,
+                        android.R.layout.simple_spinner_dropdown_item,
+                        doctors
+                );
+
+        spinner3.setAdapter(doctorAdapter);
+
+        // -----------------------------
+        // CHOOSE FILE
+        // -----------------------------
+        btnUpload.setOnClickListener(v -> {
+
+            // SIMULATED FILE PICK
+            selectedFileName = "medical_report.pdf";
+
+            txtFileName.setText(selectedFileName);
+
+            Toast.makeText(
+                    this,
+                    "File Selected",
+                    Toast.LENGTH_SHORT
+            ).show();
+        });
+
+        // -----------------------------
+        // SAVE REPORT
+        // -----------------------------
+        btnSave.setOnClickListener(v -> {
+
+            String patient =
+                    patientName.getText().toString();
+
+            String reportType =
+                    spinner2.getSelectedItem().toString();
+
+            String doctorName =
+                    spinner3.getSelectedItem().toString();
+
+            String reportDate =
+                    editTextDate.getText().toString();
+
+            // VALIDATION
+            if(patient.isEmpty()) {
+
+                Toast.makeText(
+                        this,
+                        "Enter patient name",
+                        Toast.LENGTH_SHORT
+                ).show();
+
+                return;
+            }
+
+            if(reportDate.isEmpty()) {
+
+                Toast.makeText(
+                        this,
+                        "Enter report date",
+                        Toast.LENGTH_SHORT
+                ).show();
+
+                return;
+            }
+
+            if(selectedFileName.equals("No file selected")) {
+
+                Toast.makeText(
+                        this,
+                        "Choose a file",
+                        Toast.LENGTH_SHORT
+                ).show();
+
+                return;
+            }
+
+            // CREATE REPORT DATA
+            Map<String, Object> report =
+                    new HashMap<>();
+
+            report.put("patientName", patient);
+            report.put("reportType", reportType);
+            report.put("doctorName", doctorName);
+            report.put("reportDate", reportDate);
+            report.put("fileName", selectedFileName);
+
+            // SAVE TO FIRESTORE
+            firestore.collection("Reports")
+                    .add(report)
+                    .addOnSuccessListener(documentReference -> {
+
+                        Toast.makeText(
+                                this,
+                                "Medical Report Saved",
+                                Toast.LENGTH_SHORT
+                        ).show();
+
+                        // CLEAR FIELDS
+                        patientName.setText("");
+                        editTextDate.setText("");
+                        txtFileName.setText("No file selected");
+
+                    })
+                    .addOnFailureListener(e -> {
+
+                        Toast.makeText(
+                                this,
+                                "Error: " + e.getMessage(),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    });
+        });
+
+        // -----------------------------
+        // CANCEL BUTTON
+        // -----------------------------
         btnCancel.setOnClickListener(v -> finish());
 
-        backBtn.setOnClickListener(v -> finish());
-    }
-
-    private void loadPatients() {
-
-        firestore.collection("Users")
-                .whereEqualTo("role", "Patient")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-
-                    patientList.clear();
-                    patientIds.clear();
-
-                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-
-                        patientList.add(
-                                doc.getString("firstName") + " " +
-                                        doc.getString("lastName")
-                        );
-
-                        patientIds.add(doc.getId());
-                    }
-
-                    spinnerPatient.setAdapter(
-                            new ArrayAdapter<>(this,
-                                    android.R.layout.simple_spinner_dropdown_item,
-                                    patientList)
-                    );
-                });
-    }
-
-    private void saveReport() {
-
-        int index = spinnerPatient.getSelectedItemPosition();
-
-        String patientId = patientIds.get(index);
-        String patientName = patientList.get(index);
-
-        String reportType = spinnerReportType.getSelectedItem().toString();
-        String doctor = spinnerDoctor.getSelectedItem().toString();
-
-        Map<String, Object> report = new HashMap<>();
-        report.put("patientId", patientId);
-        report.put("patientName", patientName);
-        report.put("reportType", reportType);
-        report.put("doctor", doctor);
-        report.put("fileName", txtFileName.getText().toString());
-        report.put("date", System.currentTimeMillis());
-
-        firestore.collection("MedicalReports")
-                .add(report)
-                .addOnSuccessListener(doc -> {
-
-                    Toast.makeText(this,
-                            "Report Saved",
-                            Toast.LENGTH_SHORT).show();
-
-                    txtFileName.setText("No file selected");
-                })
-                .addOnFailureListener(e -> {
-
-                    Toast.makeText(this,
-                            e.getMessage(),
-                            Toast.LENGTH_SHORT).show();
-                });
+        // -----------------------------
+        // BACK BUTTON
+        // -----------------------------
+        imageButton15.setOnClickListener(v -> finish());
     }
 }

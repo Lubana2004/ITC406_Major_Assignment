@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class Staff_Dashboard extends AppCompatActivity {
-    Button btnPatientRecords, btnAppointment, btnUploadReports, btnMyProfile, btnLogout;
+    Button btnPatientRecords, btnUploadReports, btnMyProfile, btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,6 @@ public class Staff_Dashboard extends AppCompatActivity {
                 getIntent().getStringExtra("username");
 
         btnPatientRecords = findViewById(R.id.btnPatientRecords);
-        btnAppointment = findViewById(R.id.btnAppointment);
         btnUploadReports = findViewById(R.id.btnUploadReports);
         btnMyProfile = findViewById(R.id.btnMyProfile);
         btnLogout = findViewById(R.id.btnLogout);
@@ -41,12 +40,6 @@ public class Staff_Dashboard extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // APPOINTMENTS BUTTON
-        btnAppointment.setOnClickListener(v -> {
-            Intent intent = new Intent(Staff_Dashboard.this,
-                    Staff_Appointments.class);
-            startActivity(intent);
-        });
 
         // UPLOAD REPORTS BUTTON
         btnUploadReports.setOnClickListener(v -> {
