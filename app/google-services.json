@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "298849923564",
-    "project_id": "itc406-major-assignment-ded1c",
-    "storage_bucket": "itc406-major-assignment-ded1c.firebasestorage.app"
+    "project_number": "1057993074020",
+    "project_id": "itc406-major-assignment",
+    "storage_bucket": "itc406-major-assignment.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:298849923564:android:549ff1751e9cc47b8ad0c9",
+        "mobilesdk_app_id": "1:1057993074020:android:42de64b61ed714281a8671",
         "android_client_info": {
           "package_name": "com.example.itc406_major_assignment"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB-2sMUbAl21i2vbP7etVtqDH09B8u4Dss"
+          "current_key": "AIzaSyCl-SHEOWoQm5K6Qn3KOaWgP4jNVPlBc7w"
         }
       ],
       "services": {
