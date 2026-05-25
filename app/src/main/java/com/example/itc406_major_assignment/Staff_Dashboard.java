@@ -54,9 +54,10 @@ public class Staff_Dashboard extends AppCompatActivity {
                     new Intent(Staff_Dashboard.this,
                             Staff_My_Profile.class);
 
-            intent.putExtra("username", username);
+            intent.putExtra("Users", username);
 
             startActivity(intent);
+
         });
 
 

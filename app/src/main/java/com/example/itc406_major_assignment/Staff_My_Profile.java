@@ -1,6 +1,5 @@
 package com.example.itc406_major_assignment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +22,7 @@ public class Staff_My_Profile extends AppCompatActivity {
 
     Button btnUpdatePassword2;
 
-    ImageButton backBtn;
+    ImageButton imageButton16;
 
     FirebaseFirestore firestore;
 
@@ -38,7 +37,6 @@ public class Staff_My_Profile extends AppCompatActivity {
 
         firestore = FirebaseFirestore.getInstance();
 
-
         // TEXTVIEWS
         txtStaffName = findViewById(R.id.txtStaffName);
         txtStaffRole = findViewById(R.id.txtStaffRole);
@@ -49,59 +47,80 @@ public class Staff_My_Profile extends AppCompatActivity {
         edtNewPassword2 = findViewById(R.id.edtNewPassword2);
         edtConfirmPassword2 = findViewById(R.id.edtConfirmPassword2);
 
-        // BUTTONS
+        // BUTTON
         btnUpdatePassword2 = findViewById(R.id.btnUpdatePassword2);
-        backBtn = findViewById(R.id.imageButton16);
 
-        // GET USERNAME FROM LOGIN
-        username = getIntent().getStringExtra("username");
+        // BACK BUTTON
+        imageButton16 = findViewById(R.id.imageButton16);
 
+        // GET USERNAME FROM INTENT
+        username = getIntent().getStringExtra("Users");
+
+        if(username == null || username.isEmpty()) {
+
+            Toast.makeText(this,
+                    "Username not received",
+                    Toast.LENGTH_LONG).show();
+
+            return;
+        }
+
+        // LOAD STAFF DATA
         loadStaffData();
 
         // UPDATE PASSWORD
         btnUpdatePassword2.setOnClickListener(v -> {
 
             String currentPassword =
-                    edtCurrentPassword2.getText().toString();
+                    edtCurrentPassword2.getText().toString().trim();
 
             String newPassword =
-                    edtNewPassword2.getText().toString();
+                    edtNewPassword2.getText().toString().trim();
 
             String confirmPassword =
-                    edtConfirmPassword2.getText().toString();
+                    edtConfirmPassword2.getText().toString().trim();
 
+            // VALIDATION
+            if(currentPassword.isEmpty()
+                    || newPassword.isEmpty()
+                    || confirmPassword.isEmpty()) {
+
+                Toast.makeText(this,
+                        "Fill all fields",
+                        Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+
+            // CHECK CURRENT PASSWORD
             if(!currentPassword.equals(currentPasswordFromDB)) {
 
-                Toast.makeText(
-                        this,
+                Toast.makeText(this,
                         "Current password incorrect",
-                        Toast.LENGTH_SHORT
-                ).show();
+                        Toast.LENGTH_SHORT).show();
 
                 return;
             }
 
+            // CHECK PASSWORD MATCH
             if(!newPassword.equals(confirmPassword)) {
 
-                Toast.makeText(
-                        this,
+                Toast.makeText(this,
                         "Passwords do not match",
-                        Toast.LENGTH_SHORT
-                ).show();
+                        Toast.LENGTH_SHORT).show();
 
                 return;
             }
 
+            // UPDATE FIRESTORE
             firestore.collection("Users")
                     .document(documentId)
                     .update("password", newPassword)
                     .addOnSuccessListener(unused -> {
 
-                        Toast.makeText(
-                                this,
-                                "Password Updated",
-                                Toast.LENGTH_SHORT
-                        ).show();
+                        Toast.makeText(this,
+                                "Password Updated Successfully",
+                                Toast.LENGTH_SHORT).show();
 
                         edtCurrentPassword2.setText("");
                         edtNewPassword2.setText("");
@@ -110,17 +129,14 @@ public class Staff_My_Profile extends AppCompatActivity {
                     })
                     .addOnFailureListener(e -> {
 
-                        Toast.makeText(
-                                this,
+                        Toast.makeText(this,
                                 e.getMessage(),
-                                Toast.LENGTH_SHORT
-                        ).show();
-
+                                Toast.LENGTH_SHORT).show();
                     });
         });
 
         // BACK BUTTON
-        backBtn.setOnClickListener(v -> finish());
+        imageButton16.setOnClickListener(v -> finish());
     }
 
     private void loadStaffData() {
@@ -129,6 +145,15 @@ public class Staff_My_Profile extends AppCompatActivity {
                 .whereEqualTo("username", username)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+
+                    if(queryDocumentSnapshots.isEmpty()) {
+
+                        Toast.makeText(this,
+                                "No staff data found",
+                                Toast.LENGTH_SHORT).show();
+
+                        return;
+                    }
 
                     for(QueryDocumentSnapshot doc :
                             queryDocumentSnapshots) {
@@ -150,6 +175,7 @@ public class Staff_My_Profile extends AppCompatActivity {
                         currentPasswordFromDB =
                                 doc.getString("password");
 
+                        // DISPLAY DATA
                         txtStaffName.setText(
                                 "Name: " +
                                         firstName + " " + lastName);
@@ -160,6 +186,12 @@ public class Staff_My_Profile extends AppCompatActivity {
                         txtStaffPhone.setText(
                                 "Phone: " + phone);
                     }
+                })
+                .addOnFailureListener(e -> {
+
+                    Toast.makeText(this,
+                            e.getMessage(),
+                            Toast.LENGTH_SHORT).show();
                 });
     }
 }
