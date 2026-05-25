@@ -61,7 +61,7 @@ public class Staff_Dashboard extends AppCompatActivity {
 
 
         btnLogout.setOnClickListener(v -> {
-            startActivity(new Intent(this, Login_Staff.class));
+            startActivity(new Intent(this, MainActivity.class));
             finish();
         });
 

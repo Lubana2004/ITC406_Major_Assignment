@@ -57,7 +57,7 @@ public class Edit_User_Admin extends AppCompatActivity {
 
         // SPINNER DATA
         String[] gender = {"Female", "Male", "Other"};
-        String[] role = {"Staff", "Patient"};
+        String[] role = {"Staff", "Patient","Admin"};
 
         ArrayAdapter<String> genderAdapter =
                 new ArrayAdapter<>(this,

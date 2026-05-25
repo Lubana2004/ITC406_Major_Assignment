@@ -49,7 +49,7 @@ public class Admin_Dashboard extends AppCompatActivity {
 
         // LOGOUT
         btnLogout.setOnClickListener(v -> {
-            startActivity(new Intent(this, Login_Admin.class));
+            startActivity(new Intent(this, MainActivity.class));
             finish();
         });
     }
@@ -69,7 +69,7 @@ public class Admin_Dashboard extends AppCompatActivity {
 
         // STAFF COUNT
         firestore.collection("Users")
-                .whereEqualTo("role", "Staff")
+                .whereEqualTo("role", "Staff"+"Admin")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
 

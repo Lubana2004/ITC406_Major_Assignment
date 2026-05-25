@@ -62,7 +62,7 @@ public class Patient_Dashboard extends AppCompatActivity {
 
             Intent intent = new Intent(
                     Patient_Dashboard.this,
-                    Login_Patient.class
+                    MainActivity.class
             );
 
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
