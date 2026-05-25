@@ -63,18 +63,22 @@ public class Admin_Dashboard extends AppCompatActivity {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
 
                     int count = queryDocumentSnapshots.size();
-                    txtPatientCount.setText("Patient\n"+String.valueOf(count));
+                    txtPatientCount.setText("Patient\n" + String.valueOf(count));
 
                 });
 
-        // STAFF COUNT
+        // STAFF + ADMIN COUNT
         firestore.collection("Users")
-                .whereEqualTo("role", "Staff"+"Admin")
+                .whereIn("role",
+                        java.util.Arrays.asList("Staff", "Admin"))
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
 
                     int count = queryDocumentSnapshots.size();
-                    txtStaffCount.setText("Staff\n" +String.valueOf(count));
+
+                    txtStaffCount.setText(
+                            "Staff/Admin\n" + count
+                    );
 
                 });
     }
