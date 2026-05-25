@@ -77,7 +77,7 @@ public class Admin_Dashboard extends AppCompatActivity {
                     int count = queryDocumentSnapshots.size();
 
                     txtStaffCount.setText(
-                            "Staff/Admin\n" + count
+                            "Staff\n" + count
                     );
 
                 });
