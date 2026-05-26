@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:text="REPORT DETAILS"
         android:textAlignment="textStart"
-        android:textColor="#1A93F4"
+        android:textColor="#42A5F5"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -31,12 +31,16 @@
         <Button
             android:id="@+id/btnEdit"
             android:layout_width="wrap_content"
+            android:backgroundTint="#1565C0"
+
             android:layout_height="wrap_content"
             android:text="Edit" />
 
         <Button
             android:id="@+id/btnDelete"
             android:layout_width="wrap_content"
+            android:backgroundTint="#1565C0"
+
             android:layout_height="wrap_content"
             android:text="Delete" />
 

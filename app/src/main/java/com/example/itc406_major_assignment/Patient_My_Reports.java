@@ -1,10 +1,8 @@
 package com.example.itc406_major_assignment;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,14 +16,11 @@ import java.util.ArrayList;
 public class Patient_My_Reports extends AppCompatActivity {
 
     RecyclerView recyclerViewUsers;
-    EditText edtSearchUser2;
     ImageButton imageButton6;
 
     FirebaseFirestore firestore;
 
     ArrayList<ReportModel> reportList;
-    ArrayList<ReportModel> filteredList;
-
     ReportAdapter adapter;
 
     String username;
@@ -37,45 +32,28 @@ public class Patient_My_Reports extends AppCompatActivity {
 
         firestore = FirebaseFirestore.getInstance();
 
-        // GET LOGGED-IN USERNAME
+        // GET USERNAME FROM LOGIN
         username = getIntent().getStringExtra("username");
 
         recyclerViewUsers = findViewById(R.id.recyclerViewUsers);
-        edtSearchUser2 = findViewById(R.id.edtSearchUser2);
         imageButton6 = findViewById(R.id.imageButton6);
 
         recyclerViewUsers.setLayoutManager(new LinearLayoutManager(this));
 
         reportList = new ArrayList<>();
-        filteredList = new ArrayList<>();
 
-        adapter = new ReportAdapter(filteredList);
+        adapter = new ReportAdapter(reportList);
         recyclerViewUsers.setAdapter(adapter);
 
         loadReports();
 
-        // SEARCH FUNCTION
-        edtSearchUser2.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterReports(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-
-        // BACK BUTTON
         imageButton6.setOnClickListener(v -> finish());
     }
 
     private void loadReports() {
 
         firestore.collection("Reports")
-                .whereEqualTo("patientName", username) // IMPORTANT FILTER
+                .whereEqualTo("patientName", username)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
 
@@ -96,25 +74,10 @@ public class Patient_My_Reports extends AppCompatActivity {
                         ));
                     }
 
-                    filteredList.clear();
-                    filteredList.addAll(reportList);
                     adapter.notifyDataSetChanged();
-                });
-    }
-
-    private void filterReports(String text) {
-
-        filteredList.clear();
-
-        for (ReportModel model : reportList) {
-
-            if (model.getReportType().toLowerCase().contains(text.toLowerCase()) ||
-                    model.getDoctorName().toLowerCase().contains(text.toLowerCase())) {
-
-                filteredList.add(model);
-            }
-        }
-
-        adapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show()
+                );
     }
 }

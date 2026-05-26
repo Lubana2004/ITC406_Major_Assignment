@@ -6,6 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F7FA"
     tools:context=".MainActivity">
 
     <!-- LOGO -->
@@ -49,7 +50,7 @@
         android:text="SYSTEM LOGIN"
         android:textSize="28sp"
         android:textStyle="bold"
-        android:textColor="#1536E6"
+        android:textColor="#4A90E9"
         app:layout_constraintTop_toBottomOf="@id/imageViewHeart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,6 +90,8 @@
         android:id="@+id/btnLogin"
         android:layout_width="220dp"
         android:layout_height="55dp"
+        android:backgroundTint="#4A90E9"
+
         android:text="LOGIN"
         android:textStyle="bold"
         android:textSize="18sp"
