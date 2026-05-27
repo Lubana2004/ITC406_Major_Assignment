@@ -46,7 +46,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         holder.txtName.setText(user.firstname + " " + user.lastname);
         holder.txtRole.setText(user.role);
 
-        // DELETE BUTTON (FIRESTORE)
         holder.btnDelete.setOnClickListener(v -> {
 
             firestore.collection("Users")
@@ -61,7 +60,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                     });
         });
 
-        // EDIT BUTTON
         holder.btnEdit.setOnClickListener(v -> {
 
             Intent intent = new Intent(context, Edit_User_Admin.class);

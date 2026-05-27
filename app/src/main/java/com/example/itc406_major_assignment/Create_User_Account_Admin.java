@@ -38,14 +38,11 @@ public class Create_User_Account_Admin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_user_account_admin);
 
-        // FIREBASE FIRESTORE INIT
         firestore = FirebaseFirestore.getInstance();
 
-        // SPINNERS
         spinnerGender = findViewById(R.id.spinnerGender);
         spinnerRole = findViewById(R.id.spinnerRole);
 
-        // EDITTEXTS
         edtFirstName = findViewById(R.id.edtFirstName);
         edtLastName = findViewById(R.id.edtFirstName2);
         edtAddress = findViewById(R.id.edtAddress);
@@ -53,14 +50,11 @@ public class Create_User_Account_Admin extends AppCompatActivity {
         edtUsername = findViewById(R.id.edtUsername1);
         edtPassword = findViewById(R.id.edtTemporaryPassword);
 
-        // BUTTONS
         btnCreateAccount = findViewById(R.id.btnCreateAccount);
         btnClearForm = findViewById(R.id.btnClearForm);
 
-        // BACK BUTTON
         backBtn = findViewById(R.id.imageButton);
 
-        // GENDER SPINNER
         String[] gender = {"Female", "Male", "Other"};
 
         ArrayAdapter<String> genderAdapter =
@@ -74,8 +68,8 @@ public class Create_User_Account_Admin extends AppCompatActivity {
 
         spinnerGender.setAdapter(genderAdapter);
 
-        // ROLE SPINNER
-        String[] role = {"Staff", "Patient"};
+        String[] role = {"Staff", "Patient","Admin"};
+
 
         ArrayAdapter<String> roleAdapter =
                 new ArrayAdapter<>(this,
@@ -88,7 +82,6 @@ public class Create_User_Account_Admin extends AppCompatActivity {
 
         spinnerRole.setAdapter(roleAdapter);
 
-        // CREATE ACCOUNT BUTTON
         btnCreateAccount.setOnClickListener(v -> {
 
             String firstName = edtFirstName.getText().toString().trim();
@@ -101,7 +94,6 @@ public class Create_User_Account_Admin extends AppCompatActivity {
             String genderValue = spinnerGender.getSelectedItem().toString();
             String roleValue = spinnerRole.getSelectedItem().toString();
 
-            // VALIDATION
             if (firstName.isEmpty() || lastName.isEmpty() ||
                     address.isEmpty() || number.isEmpty() ||
                     username.isEmpty() || password.isEmpty()) {
@@ -112,7 +104,6 @@ public class Create_User_Account_Admin extends AppCompatActivity {
                 return;
             }
 
-            // CREATE DATA MAP
             Map<String, Object> user = new HashMap<>();
             user.put("firstName", firstName);
             user.put("lastName", lastName);
@@ -123,7 +114,6 @@ public class Create_User_Account_Admin extends AppCompatActivity {
             user.put("username", username);
             user.put("password", password);
 
-            // SAVE TO FIRESTORE
             firestore.collection("Users")
                     .add(user)
                     .addOnSuccessListener(documentReference -> {
@@ -134,7 +124,6 @@ public class Create_User_Account_Admin extends AppCompatActivity {
                                 Toast.LENGTH_SHORT
                         ).show();
 
-                        // CLEAR FORM
                         edtFirstName.setText("");
                         edtLastName.setText("");
                         edtAddress.setText("");
@@ -156,7 +145,6 @@ public class Create_User_Account_Admin extends AppCompatActivity {
                     });
         });
 
-        // CLEAR BUTTON
         btnClearForm.setOnClickListener(v -> {
 
             edtFirstName.setText("");
@@ -170,7 +158,6 @@ public class Create_User_Account_Admin extends AppCompatActivity {
             spinnerRole.setSelection(0);
         });
 
-        // BACK BUTTON
         backBtn.setOnClickListener(v -> {
             Intent intent = new Intent(
                     Create_User_Account_Admin.this,

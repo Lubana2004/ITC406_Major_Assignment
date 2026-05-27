@@ -33,7 +33,6 @@ public class Staff_Dashboard extends AppCompatActivity {
         btnMyProfile = findViewById(R.id.btnMyProfile);
         btnLogout = findViewById(R.id.btnLogout);
 
-        // PATIENT RECORDS BUTTON
         btnPatientRecords.setOnClickListener(v -> {
             Intent intent = new Intent(Staff_Dashboard.this,
                     Staff_Patient_Reports.class);
@@ -41,14 +40,12 @@ public class Staff_Dashboard extends AppCompatActivity {
         });
 
 
-        // UPLOAD REPORTS BUTTON
         btnUploadReports.setOnClickListener(v -> {
             Intent intent = new Intent(Staff_Dashboard.this,
                     Staff_Upload_Medical_Report.class);
             startActivity(intent);
         });
 
-        // MY PROFILE BUTTON
         btnMyProfile.setOnClickListener(v -> {
             Intent intent =
                     new Intent(Staff_Dashboard.this,

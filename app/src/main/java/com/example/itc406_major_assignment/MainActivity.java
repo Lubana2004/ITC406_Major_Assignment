@@ -63,9 +63,7 @@ public class MainActivity extends AppCompatActivity {
                                     "Login Successful",
                                     Toast.LENGTH_SHORT).show();
 
-                            // =========================
-                            // ADMIN LOGIN
-                            // =========================
+
                             if (role.equalsIgnoreCase("Admin")) {
 
                                 Intent intent = new Intent(MainActivity.this,
@@ -78,9 +76,7 @@ public class MainActivity extends AppCompatActivity {
                                 finish();
                             }
 
-                            // =========================
-                            // STAFF LOGIN
-                            // =========================
+
                             else if (role.equalsIgnoreCase("Staff")) {
 
                                 Intent intent = new Intent(MainActivity.this,
@@ -93,9 +89,7 @@ public class MainActivity extends AppCompatActivity {
                                 finish();
                             }
 
-                            // =========================
-                            // PATIENT LOGIN
-                            // =========================
+
                             else if (role.equalsIgnoreCase("Patient")) {
 
                                 Intent intent = new Intent(MainActivity.this,

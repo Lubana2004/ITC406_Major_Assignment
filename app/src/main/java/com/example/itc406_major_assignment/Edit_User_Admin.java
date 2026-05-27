@@ -36,10 +36,8 @@ public class Edit_User_Admin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user_admin);
 
-        // FIREBASE INIT
         firestore = FirebaseFirestore.getInstance();
 
-        // EDITTEXTS
         edtFirstName = findViewById(R.id.edtFirstName3);
         edtLastName = findViewById(R.id.edtFirstName4);
         edtAddress = findViewById(R.id.edtAddress2);
@@ -47,15 +45,12 @@ public class Edit_User_Admin extends AppCompatActivity {
         edtUsername = findViewById(R.id.edtUsername2);
         edtPassword = findViewById(R.id.edtTemporaryPassword2);
 
-        // SPINNERS
         spinnerGender = findViewById(R.id.spinnerGender2);
         spinnerRole = findViewById(R.id.spinnerRole2);
 
-        // BUTTONS
         btnSave = findViewById(R.id.btnSave);
         backBtn = findViewById(R.id.imageButton4);
 
-        // SPINNER DATA
         String[] gender = {"Female", "Male", "Other"};
         String[] role = {"Staff", "Patient","Admin"};
 
@@ -72,13 +67,10 @@ public class Edit_User_Admin extends AppCompatActivity {
         spinnerGender.setAdapter(genderAdapter);
         spinnerRole.setAdapter(roleAdapter);
 
-        // GET USER ID FROM INTENT
         userId = getIntent().getStringExtra("id");
 
-        // LOAD USER DATA
         loadUserData();
 
-        // SAVE / UPDATE USER
         btnSave.setOnClickListener(v -> {
 
             firestore.collection("Users")
@@ -114,7 +106,6 @@ public class Edit_User_Admin extends AppCompatActivity {
                     });
         });
 
-        // BACK BUTTON
         backBtn.setOnClickListener(v -> finish());
     }
 

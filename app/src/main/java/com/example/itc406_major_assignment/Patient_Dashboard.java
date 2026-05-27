@@ -19,10 +19,8 @@ public class Patient_Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_dashboard);
 
-        // GET DATA FROM LOGIN
         username = getIntent().getStringExtra("username");
 
-        // INIT VIEWS
         txtWelcome = findViewById(R.id.txtWelcome);
         txtPatientId = findViewById(R.id.txtWelcome2);
 
@@ -30,10 +28,8 @@ public class Patient_Dashboard extends AppCompatActivity {
         btnMyProfile = findViewById(R.id.btnMyPofile);
         btnLogout = findViewById(R.id.btnLogout);
 
-        // SHOW USERNAME
         txtPatientId.setText("Patient Name: " + username);
 
-        // REPORTS BUTTON
         btnReports.setOnClickListener(v -> {
 
             Intent intent = new Intent(
@@ -45,7 +41,6 @@ public class Patient_Dashboard extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // PROFILE BUTTON
         btnMyProfile.setOnClickListener(v -> {
 
             Intent intent = new Intent(
@@ -57,7 +52,6 @@ public class Patient_Dashboard extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // LOGOUT BUTTON
         btnLogout.setOnClickListener(v -> {
 
             Intent intent = new Intent(

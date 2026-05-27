@@ -37,31 +37,23 @@ public class Staff_Upload_Medical_Report extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staff_upload_medical_report);
 
-        // FIRESTORE
         firestore = FirebaseFirestore.getInstance();
 
-        // SPINNERS
         spinner2 = findViewById(R.id.spinner2);
         spinner3 = findViewById(R.id.spinner3);
 
-        // EDITTEXTS
         editTextDate = findViewById(R.id.editTextDate);
         patientName = findViewById(R.id.patientName);
 
-        // TEXTVIEW
         txtFileName = findViewById(R.id.txtFileName);
 
-        // BUTTONS
         btnUpload = findViewById(R.id.btnUpload);
         btnSave = findViewById(R.id.btnSave);
         btnCancel = findViewById(R.id.btnCancel);
 
-        // BACK BUTTON
         imageButton15 = findViewById(R.id.imageButton15);
 
-        // -----------------------------
-        // REPORT TYPES
-        // -----------------------------
+
         String[] reportTypes = {
                 "Blood Test",
                 "X-Ray",
@@ -79,9 +71,7 @@ public class Staff_Upload_Medical_Report extends AppCompatActivity {
 
         spinner2.setAdapter(reportAdapter);
 
-        // -----------------------------
-        // DOCTOR NAMES
-        // -----------------------------
+
         String[] doctors = {
                 "Dr Smith",
                 "Dr Kumar",
@@ -97,12 +87,9 @@ public class Staff_Upload_Medical_Report extends AppCompatActivity {
 
         spinner3.setAdapter(doctorAdapter);
 
-        // -----------------------------
-        // CHOOSE FILE
-        // -----------------------------
+
         btnUpload.setOnClickListener(v -> {
 
-            // SIMULATED FILE PICK
             selectedFileName = "medical_report.pdf";
 
             txtFileName.setText(selectedFileName);
@@ -114,9 +101,7 @@ public class Staff_Upload_Medical_Report extends AppCompatActivity {
             ).show();
         });
 
-        // -----------------------------
-        // SAVE REPORT
-        // -----------------------------
+
         btnSave.setOnClickListener(v -> {
 
             String patient =
@@ -131,7 +116,7 @@ public class Staff_Upload_Medical_Report extends AppCompatActivity {
             String reportDate =
                     editTextDate.getText().toString();
 
-            // VALIDATION
+
             if(patient.isEmpty()) {
 
                 Toast.makeText(
@@ -165,7 +150,7 @@ public class Staff_Upload_Medical_Report extends AppCompatActivity {
                 return;
             }
 
-            // CREATE REPORT DATA
+
             Map<String, Object> report =
                     new HashMap<>();
 
@@ -175,7 +160,7 @@ public class Staff_Upload_Medical_Report extends AppCompatActivity {
             report.put("reportDate", reportDate);
             report.put("fileName", selectedFileName);
 
-            // SAVE TO FIRESTORE
+
             firestore.collection("Reports")
                     .add(report)
                     .addOnSuccessListener(documentReference -> {
@@ -186,7 +171,7 @@ public class Staff_Upload_Medical_Report extends AppCompatActivity {
                                 Toast.LENGTH_SHORT
                         ).show();
 
-                        // CLEAR FIELDS
+
                         patientName.setText("");
                         editTextDate.setText("");
                         txtFileName.setText("No file selected");
@@ -202,14 +187,10 @@ public class Staff_Upload_Medical_Report extends AppCompatActivity {
                     });
         });
 
-        // -----------------------------
-        // CANCEL BUTTON
-        // -----------------------------
+
         btnCancel.setOnClickListener(v -> finish());
 
-        // -----------------------------
-        // BACK BUTTON
-        // -----------------------------
+
         imageButton15.setOnClickListener(v -> finish());
     }
 }

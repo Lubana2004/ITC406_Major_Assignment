@@ -37,23 +37,18 @@ public class Staff_My_Profile extends AppCompatActivity {
 
         firestore = FirebaseFirestore.getInstance();
 
-        // TEXTVIEWS
         txtStaffName = findViewById(R.id.txtStaffName);
         txtStaffRole = findViewById(R.id.txtStaffRole);
         txtStaffPhone = findViewById(R.id.txtStaffPhone);
 
-        // EDITTEXTS
         edtCurrentPassword2 = findViewById(R.id.edtCurrentPassword2);
         edtNewPassword2 = findViewById(R.id.edtNewPassword2);
         edtConfirmPassword2 = findViewById(R.id.edtConfirmPassword2);
 
-        // BUTTON
         btnUpdatePassword2 = findViewById(R.id.btnUpdatePassword2);
 
-        // BACK BUTTON
         imageButton16 = findViewById(R.id.imageButton16);
 
-        // GET USERNAME FROM INTENT
         username = getIntent().getStringExtra("Users");
 
         if(username == null || username.isEmpty()) {
@@ -65,10 +60,8 @@ public class Staff_My_Profile extends AppCompatActivity {
             return;
         }
 
-        // LOAD STAFF DATA
         loadStaffData();
 
-        // UPDATE PASSWORD
         btnUpdatePassword2.setOnClickListener(v -> {
 
             String currentPassword =
@@ -80,7 +73,6 @@ public class Staff_My_Profile extends AppCompatActivity {
             String confirmPassword =
                     edtConfirmPassword2.getText().toString().trim();
 
-            // VALIDATION
             if(currentPassword.isEmpty()
                     || newPassword.isEmpty()
                     || confirmPassword.isEmpty()) {
@@ -92,7 +84,6 @@ public class Staff_My_Profile extends AppCompatActivity {
                 return;
             }
 
-            // CHECK CURRENT PASSWORD
             if(!currentPassword.equals(currentPasswordFromDB)) {
 
                 Toast.makeText(this,
@@ -102,7 +93,6 @@ public class Staff_My_Profile extends AppCompatActivity {
                 return;
             }
 
-            // CHECK PASSWORD MATCH
             if(!newPassword.equals(confirmPassword)) {
 
                 Toast.makeText(this,
@@ -112,7 +102,6 @@ public class Staff_My_Profile extends AppCompatActivity {
                 return;
             }
 
-            // UPDATE FIRESTORE
             firestore.collection("Users")
                     .document(documentId)
                     .update("password", newPassword)
@@ -135,7 +124,6 @@ public class Staff_My_Profile extends AppCompatActivity {
                     });
         });
 
-        // BACK BUTTON
         imageButton16.setOnClickListener(v -> finish());
     }
 
@@ -175,7 +163,6 @@ public class Staff_My_Profile extends AppCompatActivity {
                         currentPasswordFromDB =
                                 doc.getString("password");
 
-                        // DISPLAY DATA
                         txtStaffName.setText(
                                 "Name: " +
                                         firstName + " " + lastName);

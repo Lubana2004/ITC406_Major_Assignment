@@ -32,10 +32,8 @@ public class Patient_My_Profile extends AppCompatActivity {
 
         firestore = FirebaseFirestore.getInstance();
 
-        // GET INTENT DATA
         username = getIntent().getStringExtra("username");
 
-        // INIT VIEWS
         edtCurrentPassword = findViewById(R.id.edtCurrentPassword);
         edtNewPassword = findViewById(R.id.edtNewPassword);
         edtConfirmPassword = findViewById(R.id.edtConfirmPassword);
@@ -45,10 +43,8 @@ public class Patient_My_Profile extends AppCompatActivity {
         btnUpdatePassword = findViewById(R.id.btnUpdatePassword);
         backBtn = findViewById(R.id.imageButton9);
 
-        // LOAD USER DATA
         loadUser();
 
-        // UPDATE PASSWORD BUTTON
         btnUpdatePassword.setOnClickListener(v -> {
 
             String currentPassword = edtCurrentPassword.getText().toString().trim();
@@ -60,19 +56,16 @@ public class Patient_My_Profile extends AppCompatActivity {
                 return;
             }
 
-            // CHECK CURRENT PASSWORD
             if (!currentPassword.equals(currentPasswordFromDB)) {
                 Toast.makeText(this, "Current password is incorrect", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // CHECK NEW PASSWORD MATCH
             if (!newPassword.equals(confirmPassword)) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // UPDATE FIRESTORE
             firestore.collection("Users")
                     .document(documentId)
                     .update("password", newPassword)
@@ -90,7 +83,6 @@ public class Patient_My_Profile extends AppCompatActivity {
                     );
         });
 
-        // BACK BUTTON
         backBtn.setOnClickListener(v -> finish());
     }
 
@@ -110,10 +102,8 @@ public class Patient_My_Profile extends AppCompatActivity {
                         String lastName = doc.getString("lastName");
                         String role = doc.getString("role");
 
-                        // DISPLAY NAME
                         txtName.setText("Name: " + firstName + " " + lastName);
 
-                        // DISPLAY ROLE
                         txtRole.setText("Role: " + role);
                     }
                 });

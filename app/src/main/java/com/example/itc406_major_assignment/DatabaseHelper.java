@@ -52,7 +52,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // INSERT USER
     public boolean insertUser(String firstname, String lastname,
                               String gender, String address,
                               String phone, String role,
@@ -76,7 +75,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // GET ALL USERS
     public Cursor getAllUsers() {
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -84,7 +82,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery("SELECT * FROM " + TABLE_USERS, null);
     }
 
-    // DELETE USER
     public void deleteUser(int id) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -92,7 +89,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_USERS, "id=?", new String[]{String.valueOf(id)});
     }
 
-    // UPDATE USER
     public boolean updateUser(int id,
                               String firstname,
                               String lastname,
@@ -124,7 +120,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result > 0;
     }
 
-    // COUNT STAFF
     public int getStaffCount() {
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -139,7 +134,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count;
     }
 
-    // COUNT PATIENT
     public int getPatientCount() {
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -153,7 +147,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return count;
     }
-    // GET SINGLE USER
     public Cursor getUserById(int id) {
 
         SQLiteDatabase db = this.getReadableDatabase();

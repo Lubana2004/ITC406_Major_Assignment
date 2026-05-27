@@ -29,10 +29,8 @@ public class Manage_User_Admin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_user_admin);
 
-        // FIREBASE
         firestore = FirebaseFirestore.getInstance();
 
-        // RECYCLER
         recyclerView = findViewById(R.id.recyclerViewUsers);
         backBtn = findViewById(R.id.imageButton5);
 
@@ -47,7 +45,6 @@ public class Manage_User_Admin extends AppCompatActivity {
 
         loadUsers();
 
-        // BACK BUTTON
         backBtn.setOnClickListener(v -> {
             startActivity(new Intent(this, Admin_Dashboard.class));
             finish();

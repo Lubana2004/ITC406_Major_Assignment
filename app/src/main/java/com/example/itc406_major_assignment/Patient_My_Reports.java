@@ -32,7 +32,6 @@ public class Patient_My_Reports extends AppCompatActivity {
 
         firestore = FirebaseFirestore.getInstance();
 
-        // GET USERNAME FROM LOGIN
         username = getIntent().getStringExtra("username");
 
         recyclerViewUsers = findViewById(R.id.recyclerViewUsers);
